@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 import {
   QuestStatus,
@@ -14,6 +14,13 @@ interface ImgMediaCardProps {
 }
 function ImgMediaCard({ submission }: ImgMediaCardProps) {
   const { status, content, uploadTime } = submission;
+
+  const extraCount =
+    content.type !== QuestSubmissionContentType.TEXT &&
+    (content.totalCount ?? 1) > 1
+      ? content.totalCount! - 1
+      : 0;
+
   return (
     <Card
       sx={{
@@ -34,21 +41,63 @@ function ImgMediaCard({ submission }: ImgMediaCardProps) {
       }}
     >
       {content.type === QuestSubmissionContentType.IMAGE ? (
-        <CardMedia
-          component="img"
-          height="195"
-          image={content.url}
-          alt="submission image"
-          onClick={() => window.open(content.url, "_blank")}
-        />
+        <Box sx={{ position: "relative", height: "195px", flexShrink: 0 }}>
+          <CardMedia
+            component="img"
+            height="195"
+            image={content.url}
+            alt="submission image"
+            onClick={() => window.open(content.url, "_blank")}
+          />
+          {extraCount > 0 && (
+            <Typography
+              variant="caption"
+              sx={{
+                position: "absolute",
+                bottom: 6,
+                right: 8,
+                bgcolor: "rgba(0,0,0,0.55)",
+                color: "#fff",
+                px: 0.75,
+                py: 0.25,
+                borderRadius: 1,
+                lineHeight: 1.4,
+                pointerEvents: "none",
+              }}
+            >
+              +{extraCount} more
+            </Typography>
+          )}
+        </Box>
       ) : content.type === QuestSubmissionContentType.VIDEO ? (
-        <CardMedia
-          component="video"
-          image={content.url}
-          controls
-          onClick={() => window.open(content.url, "_blank")}
-          style={{ height: "195px" }}
-        />
+        <Box sx={{ position: "relative", height: "195px", flexShrink: 0 }}>
+          <CardMedia
+            component="video"
+            image={content.url}
+            controls
+            onClick={() => window.open(content.url, "_blank")}
+            style={{ height: "195px" }}
+          />
+          {extraCount > 0 && (
+            <Typography
+              variant="caption"
+              sx={{
+                position: "absolute",
+                bottom: 6,
+                right: 8,
+                bgcolor: "rgba(0,0,0,0.55)",
+                color: "#fff",
+                px: 0.75,
+                py: 0.25,
+                borderRadius: 1,
+                lineHeight: 1.4,
+                pointerEvents: "none",
+              }}
+            >
+              +{extraCount} more
+            </Typography>
+          )}
+        </Box>
       ) : (
         <CardContent>
           <Typography

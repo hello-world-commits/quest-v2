@@ -166,13 +166,11 @@ function ValidateSubmissions({
                   <TableCell>
                     <Stack>
                       <div>{row.text}</div>
-                      {row.url ? (
-                        <a href={row.url} target="_blank" rel="noreferrer">
-                          Attachment
+                      {row.urls?.map((url, i) => (
+                        <a key={url} href={url} target="_blank" rel="noreferrer">
+                          Attachment {row.urls!.length > 1 ? i + 1 : ""}
                         </a>
-                      ) : (
-                        <div />
-                      )}
+                      ))}
                     </Stack>
                   </TableCell>
                   {row.status === "PENDING" ? (

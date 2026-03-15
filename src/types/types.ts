@@ -39,6 +39,7 @@ export interface UserInfo {
   id: string;
   email: string;
   name: string;
+  canSubmit?: boolean;
   canValidate?: boolean;
   user?: {
     email: string;
@@ -86,11 +87,15 @@ export interface QuestSubmissionText {
 export interface QuestSubmissionVideo {
   type: QuestSubmissionContentType.VIDEO;
   url: string;
+  /** Total number of attachments. Used to show "+N more" when > 1. */
+  totalCount?: number;
 }
 
 export interface QuestSubmissionImage {
   type: QuestSubmissionContentType.IMAGE;
   url: string;
+  /** Total number of attachments. Used to show "+N more" when > 1. */
+  totalCount?: number;
 }
 
 export type QuestSubmissionContent =
@@ -121,7 +126,7 @@ export interface ValidatedSubmissionListItem {
   status: Status;
   createdAt?: string;
   text?: string;
-  url?: string;
+  urls?: string[];
 }
 
 export interface ValidatedSubmissionsListResult {

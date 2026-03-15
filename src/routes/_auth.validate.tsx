@@ -72,14 +72,19 @@ export const Route = createFileRoute("/_auth/validate")({
     const submissions: ValidatedSubmissionsListResult = {
       items: result.items.map((row) => {
         let text: string | undefined = undefined;
-        let url: string | undefined = undefined;
+        let urls: string[] | undefined = undefined;
         const submission = row.expand?.submission;
         if (submission) {
           text = submission.text;
-          if (submission.attachment) {
-            url = pb.files.getURL(submission, submission.attachment, {
-              token: fileToken,
-            });
+          const attachments = Array.isArray(submission.attachment)
+            ? submission.attachment
+            : submission.attachment
+              ? [submission.attachment]
+              : [];
+          if (attachments.length) {
+            urls = attachments.map((filename) =>
+              pb.files.getURL(submission, filename, { token: fileToken }),
+            );
           }
         }
         return {
@@ -91,7 +96,7 @@ export const Route = createFileRoute("/_auth/validate")({
           status: row.status as Status,
           createdAt: submission?.created,
           text,
-          url,
+          urls,
         };
       }),
       totalItems: result.totalItems,

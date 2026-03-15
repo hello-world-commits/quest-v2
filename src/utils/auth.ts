@@ -24,6 +24,7 @@ export function getUserInfo() {
       email: pbUser.email,
       name: pbUser.name || "",
       token: pb.authStore.token,
+      canSubmit: pbUser.can_submit ?? false,
       canValidate: pbUser.can_validate,
       user: {
         firstName: pbUser.name?.split(" ").at(0) || "",
@@ -42,6 +43,16 @@ export function getCurrentUserId() {
 
 export const logout = () => {
   pb.authStore.clear();
+};
+
+/**
+ * Refresh the auth store record from the server.
+ * This keeps user flags like `can_submit` and `can_validate` in sync
+ * without requiring a full logout/login cycle.
+ * Call this from protected-route loaders.
+ */
+export const refreshAuth = async () => {
+  await pb.collection(Collections.Users).authRefresh();
 };
 
 export const login = async (user: any) => {

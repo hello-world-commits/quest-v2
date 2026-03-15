@@ -142,7 +142,7 @@ export type QuestsWithSubmissionStatsRecord = {
 }
 
 export type SubmissionsRecord = {
-	attachment?: FileNameString
+	attachment?: FileNameString[]
 	created: IsoAutoDateString
 	id: string
 	quest: RecordIdString

@@ -68,11 +68,15 @@ export const Route = createFileRoute("/_auth/quest-details/$questId")({
         const submission = validated_submission.expand?.submission;
         if (!submission) return [];
 
-        function getAttachmentUrl() {
-          return pb.files.getURL(submission, submission.attachment!, {
-            token: fileToken,
-          });
-        }
+        const attachments = Array.isArray(submission.attachment)
+          ? submission.attachment
+          : submission.attachment
+            ? [submission.attachment]
+            : [];
+
+        const firstAttachmentUrl = attachments.length
+          ? pb.files.getURL(submission, attachments[0], { token: fileToken })
+          : "";
 
         const content: QuestSubmissionContent =
           quest.type === QuestType.TEXT
@@ -83,11 +87,13 @@ export const Route = createFileRoute("/_auth/quest-details/$questId")({
             : quest.type === QuestType.IMAGE
               ? {
                   type: QuestSubmissionContentType.IMAGE,
-                  url: getAttachmentUrl(),
+                  url: firstAttachmentUrl,
+                  totalCount: attachments.length,
                 }
               : {
                   type: QuestSubmissionContentType.VIDEO,
-                  url: getAttachmentUrl(),
+                  url: firstAttachmentUrl,
+                  totalCount: attachments.length,
                 };
 
         return {
