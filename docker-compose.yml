@@ -1,14 +1,18 @@
 services:
   quest:
-    image: ghcr.io/icpc/quest-v2:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        POCKETBASE_VERSION: "0.26.3"
     container_name: quest
     restart: unless-stopped
     environment:
       ENCRYPTION: ""
-      POCKETBASE_ADMIN_EMAIL: ""
-      POCKETBASE_ADMIN_PASSWORD: ""
+      POCKETBASE_ADMIN_EMAIL: "admin@quest.local"
+      POCKETBASE_ADMIN_PASSWORD: "jazqob-haqzEs-tiksy1"
     ports:
-      - "8090:8090"
+      - "127.0.0.1:8090:8090"
     volumes:
       - ./pb_data:/pb_data
     healthcheck:
