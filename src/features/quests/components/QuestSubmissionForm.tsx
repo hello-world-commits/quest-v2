@@ -35,17 +35,6 @@ function QuestSubmissionForm({ quest, onSubmit }: QuestSubmissionFormProps) {
         return;
       }
 
-      const expectedCategory =
-        quest.type === QuestType.VIDEO ? "video" : "image";
-      const unsupported = selected.find(
-        (f) => f.type.split("/")[0] !== expectedCategory,
-      );
-      if (unsupported) {
-        setSubmitTaskStatus("File type not supported");
-        event.target.value = "";
-        return;
-      }
-
       setSubmitTaskStatus("");
       setFiles(selected);
     },
